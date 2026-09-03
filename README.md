@@ -46,7 +46,7 @@
 #### 3. Article Extraction
 | Package | Version | Purpose & Usage |
 | :--- | :--- | :--- |
-| **`jsdom`** | `^29.1.1` | Server-side DOM implementation used to parse fetched HTML |
+| **`linkedom`** | `^0.18.13` | Lightweight server-side DOM parser optimized for serverless/edge environments |
 | **`@mozilla/readability`** | `^0.6.0` | Extracts clean article title/text from a parsed DOM, the same engine behind Firefox Reader View |
 
 #### 4. AI Summarization
@@ -83,7 +83,7 @@ Rebuilding on **Next.js** solves both problems at once: the App Router gives the
 
 ### 💡 2. Extraction-Then-Summarize, Not "Just Ask the Model for the URL"
 
-Some Gemini model/tooling combinations can fetch a URL themselves, but that path is opaque — no control over what got read, how paywalls or cookie walls were handled, or how much of the page's boilerplate leaked into the prompt. Instead, [`src/lib/extract.ts`](src/lib/extract.ts) fetches the page HTML directly and runs it through `jsdom` + `@mozilla/readability` (the same library behind Firefox's Reader View) to isolate the actual article text before it ever reaches Gemini. This keeps the extraction step inspectable, debuggable, and independent of whichever model is doing the summarizing in [`src/lib/gemini.ts`](src/lib/gemini.ts).
+Some Gemini model/tooling combinations can fetch a URL themselves, but that path is opaque — no control over what got read, how paywalls or cookie walls were handled, or how much of the page's boilerplate leaked into the prompt. Instead, [`src/lib/extract.ts`](src/lib/extract.ts) fetches the page HTML directly and runs it through `linkedom` + `@mozilla/readability` (the same library behind Firefox's Reader View) to isolate the actual article text before it ever reaches Gemini. This keeps the extraction step inspectable, debuggable, and independent of whichever model is doing the summarizing in [`src/lib/gemini.ts`](src/lib/gemini.ts).
 
 ---
 

@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Fixed the Gemini prompt and response handling so occasional stray markdown (`**bold**`, a leading "Summary:" label) from the model no longer leaks into the displayed summary as literal asterisks — the prompt now asks for plain prose, and the response is sanitized server-side as a fallback ([`src/lib/gemini.ts`](src/lib/gemini.ts)).
 - Fixed the `--font-inter` theme token, which was hardcoded to the literal string `"Inter", sans-serif` instead of the `next/font`-generated CSS variable — the self-hosted Inter font was being loaded but never actually applied. Moot now that the whole site uses Fredoka, but worth noting as a `next/font` + Tailwind v4 gotcha.
 - Increased the summary text size (`text-sm` → `text-base`, added `leading-relaxed`) for readability.
+- Replaced `jsdom` with `linkedom` in [`src/lib/extract.ts`](src/lib/extract.ts) to eliminate `ERR_REQUIRE_ESM` serverless bundling errors on Vercel caused by `jsdom`'s transitive `html-encoding-sniffer` / `@exodus/bytes` dependencies.
 
 ## Legacy (pre-rebuild)
 

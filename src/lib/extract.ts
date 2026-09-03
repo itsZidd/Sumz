@@ -1,4 +1,4 @@
-import { JSDOM } from "jsdom";
+import { parseHTML } from "linkedom";
 import { Readability } from "@mozilla/readability";
 import { assertPublicHostname } from "./ssrf";
 import { isDisallowedByRobots } from "./robots";
@@ -43,8 +43,8 @@ export async function extractArticle(url: string) {
   }
 
   const html = await response.text();
-  const dom = new JSDOM(html, { url: response.url });
-  const article = new Readability(dom.window.document).parse();
+  const { document } = parseHTML(html);
+  const article = new Readability(document as unknown as Document).parse();
 
   if (!article?.textContent?.trim()) {
     throw new ExtractionError(
